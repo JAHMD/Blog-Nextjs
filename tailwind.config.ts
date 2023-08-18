@@ -8,6 +8,15 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
+			container: {
+				center: true,
+				padding: "2rem",
+			},
+			colors: {
+				primary: {
+					border: "rgb(255 255 255 / 0.1)",
+				},
+			},
 			backgroundImage: {
 				"gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
 				"gradient-conic":
