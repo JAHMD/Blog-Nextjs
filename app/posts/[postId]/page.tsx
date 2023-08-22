@@ -42,14 +42,14 @@ const PostPage = async ({
 	const formattedDate = getFormattedDate(date);
 
 	return (
-		<main className="container prose prose-xl prose-invert">
-			<h1 className="text-3xl mt-4 mb-0">{title}</h1>
+		<main className="container prose prose-xl prose-invert py-10">
+			<Link href="./" className="text-base no-underline">
+				← Back
+			</Link>
+			<h1 className="text-3xl mt-8 mb-0">{title}</h1>
 			<p className="mt-0">{formattedDate}</p>
 			<article>
 				<section dangerouslySetInnerHTML={{ __html: contentHtml }} />
-				<p>
-					<Link href="/">← Back to home</Link>
-				</p>
 			</article>
 		</main>
 	);

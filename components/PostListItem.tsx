@@ -13,12 +13,12 @@ const PostListItem = ({ post }: Props) => {
 	return (
 		<li className="mt-4 text-xl">
 			<Link
-				className="underline inline-block hover:text-white/80 transition-colors first-letter:capitalize"
+				className="underline inline-block text-white/90 hover:text-white transition-colors first-letter:capitalize"
 				href={`/posts/${id}`}
 			>
 				{title}
 			</Link>
-			<p className="text-sm mt-2">{formattedDate}</p>
+			<p className="text-sm mt-2 text-white/60">{formattedDate}</p>
 		</li>
 	);
 };
