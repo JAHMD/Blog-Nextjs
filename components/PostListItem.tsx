@@ -3,18 +3,20 @@ import Link from "next/link";
 import React from "react";
 
 type Props = {
-	post: BlogPostType;
+	post: Meta;
 };
 
 const PostListItem = ({ post }: Props) => {
 	const { id, title, date } = post;
 	const formattedDate = getFormattedDate(date);
 
+	const validId = id.replace(/\.mdx/, "");
+
 	return (
 		<li className="mt-4 text-xl">
 			<Link
 				className="underline inline-block text-white/90 hover:text-white transition-colors first-letter:capitalize"
-				href={`/posts/${id}`}
+				href={`/posts/${validId}`}
 			>
 				{title}
 			</Link>

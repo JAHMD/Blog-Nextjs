@@ -2,9 +2,9 @@ import Image from "next/image";
 
 const ProfilePic = () => {
 	return (
-		<section className="container py-8">
+		<section>
 			<Image
-				className="rounded-full border-4 border-primary-border h-52 w-52 object-cover mx-auto"
+				className="rounded-full border-4 border-primary-border h-52 w-52 object-cover mx-auto my-0"
 				src="/images/IMG_20210707_140555.JPG"
 				alt="user profile image"
 				width={600}

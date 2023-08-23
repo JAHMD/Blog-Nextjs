@@ -19,7 +19,9 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={`${inter.className} min-h-screen`}>
 				<Navbar />
-				{children}
+				<main className="container py-10 prose prose-xl prose-invert">
+					{children}
+				</main>
 			</body>
 		</html>
 	);

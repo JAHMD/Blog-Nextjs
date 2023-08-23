@@ -1,57 +1,104 @@
-import fs from "fs";
-import matter from "gray-matter";
-import path from "path";
-import { remark } from "remark";
-import html from "remark-html";
+import CustomImage from "@/components/CustomImage";
+import Video from "@/components/Video";
+import { compileMDX } from "next-mdx-remote/rsc";
+import { JSXElementConstructor, ReactElement } from "react";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeHighlight from "rehype-highlight/lib";
+import rehypeSlug from "rehype-slug";
 
-const postsDirectory = path.join(process.cwd(), "blog-posts");
+type FileTree = {
+	tree: [{ path: string }];
+};
 
-export function getSortedPostsData() {
-	// Get file names under /posts
-	const fileNames = fs.readdirSync(postsDirectory);
-	const allPostsData = fileNames.map((fileName) => {
-		const id = fileName.replace(/\.md$/, "");
+export async function getPostsMeta(): Promise<Meta[] | undefined> {
+	const res = await fetch(
+		"https://api.github.com/repos/JAHMD/Blog-posts/git/trees/main?recursive=1",
+		{
+			headers: {
+				Accept: "application/vnd.github+json",
+				Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+				"X-GitHub-Api-Version": "2022-11-28",
+			},
+		}
+	);
 
-		// Read markdown file as string
-		const fullPath = path.join(postsDirectory, fileName);
-		const fileContents = fs.readFileSync(fullPath, "utf8");
+	if (!res.ok) {
+		return undefined;
+	}
 
-		// Use gray-matter to parse the post metadata section
-		const matterResult = matter(fileContents);
+	const repoFileTree: FileTree = await res.json();
+	const repoFilesArray = repoFileTree.tree
+		.map((file) => file.path)
+		.filter((file) => file.endsWith(".mdx"));
 
-		const blogPost: BlogPostType = {
-			id,
-			title: matterResult.data.title,
-			date: matterResult.data.date,
-		};
+	const posts: Meta[] = [];
 
-		// Combine the data with the id
-		return blogPost;
-	});
-	// Sort posts by date
-	return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
+	for (const file of repoFilesArray) {
+		const post = await getPostByName(file);
+		if (post) {
+			const { meta } = post;
+			posts.push(meta);
+		}
+	}
+	return posts;
 }
 
-export async function getPostData(id: string) {
-	const fullPath = path.join(postsDirectory, `${id}.md`);
-	const fileContents = fs.readFileSync(fullPath, "utf8");
+export async function getPostByName(
+	fileName: string
+): Promise<BlogPostType | undefined> {
+	const res = await fetch(
+		`https://raw.githubusercontent.com/JAHMD/Blog-posts/main/${fileName}`,
+		{
+			headers: {
+				Accept: "application/vnd.github+json",
+				Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+				"X-GitHub-Api-Version": "2022-11-28",
+			},
+		}
+	);
 
-	// Use gray-matter to parse the post metadata section
-	const matterResult = matter(fileContents);
+	if (!res.ok) {
+		return undefined;
+	}
 
-	const processedContent = await remark()
-		.use(html)
-		.process(matterResult.content);
+	const rawMDX = await res.text();
 
-	const contentHtml = processedContent.toString();
+	if (rawMDX === "404: Not Found") {
+		return undefined;
+	}
 
-	const blogPostWithHTML: BlogPostType & { contentHtml: string } = {
-		id,
-		title: matterResult.data.title,
-		date: matterResult.data.date,
-		contentHtml,
-	};
+	const {
+		frontmatter,
+		content,
+	}: {
+		frontmatter: Omit<Meta, "id">;
+		content: ReactElement<any, string | JSXElementConstructor<any>>;
+	} = await compileMDX({
+		source: rawMDX,
+		options: {
+			parseFrontmatter: true,
+			mdxOptions: {
+				rehypePlugins: [
+					rehypeHighlight,
+					rehypeSlug,
+					[
+						rehypeAutolinkHeadings,
+						{
+							behavior: "wrap",
+						},
+					],
+				],
+			},
+		},
+		components: {
+			Video,
+			CustomImage,
+		},
+	});
 
-	// Combine the data with the id
-	return blogPostWithHTML;
+	const id = fileName.replace(/\.mdx&/, "");
+
+	const blogPost: BlogPostType = { meta: { id, ...frontmatter }, content };
+
+	return blogPost;
 }
