@@ -5,6 +5,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+export const revalidate = 86400;
+
 export const generateMetadata = async ({
 	params: { postId },
 }: {

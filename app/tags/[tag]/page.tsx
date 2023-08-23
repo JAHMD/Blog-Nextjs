@@ -4,6 +4,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 
+export const revalidate = 86400;
+
 export const generateMetadata = async ({
 	params: { tag },
 }: {

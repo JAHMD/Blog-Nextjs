@@ -1,9 +1,6 @@
 import PostListItem from "@/components/PostListItem";
-import { getPostsMeta } from "@/lib/posts";
 
-export default async function PostsList() {
-	const posts = await getPostsMeta();
-
+export default function PostsList({ posts }: { posts: Meta[] | undefined }) {
 	return (
 		<section className="mt-6 mx-auto max-w-2xl">
 			{posts ? (
