@@ -10,7 +10,6 @@ const NavLinks = () => {
 	const navLinks: LinkType[] = [
 		{ name: "Home", href: "/" },
 		{ name: "Posts", href: "/posts" },
-		{ name: "Create post", href: "/posts/create-post" },
 	];
 
 	const pathname = usePathname();

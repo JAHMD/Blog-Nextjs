@@ -52,7 +52,7 @@ const TagPage = async ({ params: { tag } }: { params: { tag: string } }) => {
 		<>
 			<h2 className="text-3xl mt-4 mb-0">Results for: #{tag}</h2>
 			<section className="mt-6 mx-auto max-w-2xl flex flex-col gap-6">
-				<RefreshBtn page={`tags/${tag}`} />
+				<RefreshBtn path={`tags/${tag}`} />
 				<ul className="w-full list-none p-0">
 					{tagPosts.map((post) => (
 						<PostListItem key={post.id} post={post} />

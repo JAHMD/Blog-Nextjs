@@ -18,7 +18,7 @@ const PostsPage = async () => {
 			<h2 className="text-2xl sm:text-6xl mb-6 font-bold text-white m-0">
 				Blog posts
 			</h2>
-			<RefreshBtn page="posts" />
+			<RefreshBtn path="posts" />
 			<PostsList posts={posts} />
 		</section>
 	);

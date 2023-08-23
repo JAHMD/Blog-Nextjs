@@ -1,8 +1,11 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const RefreshBtn = ({ page }: { page: string }) => {
+const RefreshBtn = ({ path }: { path: string }) => {
+	const router = useRouter();
+
 	const [clicks, setClicks] = useState<number>(3);
 	const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
 
@@ -10,15 +13,17 @@ const RefreshBtn = ({ page }: { page: string }) => {
 		if (clicks > 0) {
 			try {
 				setClicks((curr) => curr - 1);
-				await fetch(
-					`/api/revalidate?path=/${page}&secret=d9a85ee4ae4c0ed3fc0505622042b3a213e9700eab4f9f`,
+				const res = await fetch(
+					`/api/revalidate?path=/${path}&secret=d9a85ee4ae4c0ed3fc0505622042b3a213e9700eab4f9f`,
 					{ method: "POST" }
-				).then((res) => res.json());
+				);
+				const data = await res.json();
+				router.refresh();
 			} catch (error: any) {
 				alert(error.message);
 			}
 		} else {
-			alert("Too many requests!");
+			alert("Too many requests. You can refresh again after 1 min");
 			setBtnDisabled(true);
 			setClicks(0);
 		}
