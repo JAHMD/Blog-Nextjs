@@ -28,6 +28,6 @@ export async function POST(request: NextRequest) {
 		);
 	} else {
 		revalidatePath(path);
-		return NextResponse.json({ revalidated: true, now: Date.now() });
+		return NextResponse.json({ revalidated: true, remainingRequests });
 	}
 }

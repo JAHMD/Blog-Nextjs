@@ -19,13 +19,15 @@ const RefreshBtn = ({ path }: { path: string }) => {
 				);
 				const data = await res.json();
 				router.refresh();
+
+				if (!data.revalidate) {
+					alert("Too many requests. You can refresh again after 1 min");
+					setBtnDisabled(true);
+					setClicks(0);
+				}
 			} catch (error: any) {
 				alert(error.message);
 			}
-		} else {
-			alert("Too many requests. You can refresh again after 1 min");
-			setBtnDisabled(true);
-			setClicks(0);
 		}
 	};
 
