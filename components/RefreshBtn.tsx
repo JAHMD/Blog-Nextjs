@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const RefreshBtn = () => {
+const RefreshBtn = ({ page }: { page: string }) => {
 	const [clicks, setClicks] = useState<number>(3);
 	const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
 
@@ -11,7 +11,7 @@ const RefreshBtn = () => {
 			try {
 				setClicks((curr) => curr - 1);
 				await fetch(
-					"/api/revalidate?path=/posts&secret=d9a85ee4ae4c0ed3fc0505622042b3a213e9700eab4f9f",
+					`/api/revalidate?path=/${page}&secret=d9a85ee4ae4c0ed3fc0505622042b3a213e9700eab4f9f`,
 					{ method: "POST" }
 				).then((res) => res.json());
 			} catch (error: any) {

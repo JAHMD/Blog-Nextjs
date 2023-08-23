@@ -1,4 +1,5 @@
 import PostListItem from "@/components/PostListItem";
+import RefreshBtn from "@/components/RefreshBtn";
 import { getPostsMeta } from "@/lib/posts";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -50,7 +51,8 @@ const TagPage = async ({ params: { tag } }: { params: { tag: string } }) => {
 	return (
 		<>
 			<h2 className="text-3xl mt-4 mb-0">Results for: #{tag}</h2>
-			<section className="mt-6 mx-auto max-w-2xl">
+			<section className="mt-6 mx-auto max-w-2xl flex flex-col gap-6">
+				<RefreshBtn page={`tags/${tag}`} />
 				<ul className="w-full list-none p-0">
 					{tagPosts.map((post) => (
 						<PostListItem key={post.id} post={post} />
