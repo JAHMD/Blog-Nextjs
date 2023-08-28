@@ -9,14 +9,13 @@ export default async function Home() {
 					Welcome to Bloggify!
 				</h2>
 				<p className="leading-10 m-0">
-					Be passionate about sharing your knowledge and experiences in the
+					I&#39;m passionate about sharing my knowledge and experiences in the
 					world of web development, React, and Next.js and any other technology.
 				</p>
 				<p className="leading-10 m-0">
-					We believe in the power of technology to transform lives and bring
+					I believe in the power of technology to transform lives and bring
 					innovative ideas to life. Through this blog, together we can aim to
-					provide insightful and helpful content to help us on our coding
-					journey.
+					provide insightful and helpful content.
 				</p>
 				<p className="leading-10 m-0">
 					Don&#39;t hesitate to share your knowledge with others. Let&#39;s
