@@ -14,7 +14,7 @@ const RefreshBtn = ({ path }: { path: string }) => {
 			try {
 				setClicks((curr) => curr - 1);
 				const res = await fetch(
-					`/api/revalidate?path=/${path}&secret=d9a85ee4ae4c0ed3fc0505622042b3a213e9700eab4f9f`,
+					`/api/revalidate?path=/${path}&secret=${process.env.MY_SECRET_TOKEN}`,
 					{ method: "POST" }
 				);
 				const data = await res.json();
